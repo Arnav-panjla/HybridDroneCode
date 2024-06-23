@@ -1,6 +1,4 @@
 #include "Wire.h"
-#include "I2Cdev.h"
-#include "MPU6050.h"
 #include "math.h"
 
 
@@ -14,12 +12,16 @@
 #define sampleTime  0.005
 #define targetAngle -2.5
 
-///values to be modified
-const float LeftSpeedFactor =  //to be kept between 0-1
-const float RightSpeedFactor =  //to be kept between 0-1
-#define Kp  //40
-#define Kd  //0.05
-#define Ki  //40
+#include "Wire.h"
+#include "math.h"
+
+
+// dont include 9 and 10 as it is used for TCCR1A register 
+#define leftMotorPWMPin   6
+#define leftMotorDirPin   7
+#define rightMotorPWMPin  5
+#define rightMotorDirPin  4
+
 
 MPU6050 mpu;
 
