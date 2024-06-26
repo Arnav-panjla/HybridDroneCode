@@ -6,7 +6,7 @@
 
 int motorPower = 0;
 
-const float LeftSpeedFactor = 1;//to be kept between 0-1
+const float LeftSpeedFactor = 1.225;//to be kept between 0-1
 const float RightSpeedFactor = 1;//to be kept between 0-1
 
 void setMotors(int leftMotorSpeed, int rightMotorSpeed) {
@@ -15,7 +15,7 @@ void setMotors(int leftMotorSpeed, int rightMotorSpeed) {
     digitalWrite(leftMotorDirPin, LOW);
   }
   else {
-    analogWrite(leftMotorPWMPin, 255 + leftMotorSpeed);
+    analogWrite(leftMotorPWMPin, (-1)*leftMotorSpeed);
     digitalWrite(leftMotorDirPin, HIGH);
   }
   if(rightMotorSpeed >= 0) {
@@ -23,7 +23,7 @@ void setMotors(int leftMotorSpeed, int rightMotorSpeed) {
     digitalWrite(rightMotorDirPin, LOW);
   }
   else {
-    analogWrite(rightMotorPWMPin, 255 + rightMotorSpeed);
+    analogWrite(rightMotorPWMPin, (-1)*rightMotorSpeed);
     digitalWrite(rightMotorDirPin, HIGH);
   }
 }
@@ -40,8 +40,8 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  motorPower = 50;
+  motorPower = 120;
   motorPower = constrain(motorPower, -255, 255);
-  setMotors(motorPower, motorPower);
+  setMotors(motorPower*LeftSpeedFactor, motorPower*RightSpeedFactor);
 
 }
