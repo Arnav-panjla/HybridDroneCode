@@ -43,17 +43,18 @@ const float sampleTime = 0.005;
 
 int motorPower = 0;
 
+
 const float AccXerr = -0.09;
 const float AccYerr = -0.01;
 const float AccZerr = -0.84;
 
-const float Kp  = 8.5;
-const float Kd = 0.75;
+const float Kp  = 13;
+const float Kd = 0.5;
 const float Ki =  0;
 const float theta = 1;
 
-const float LeftSpeedFactor = 1;//to be kept between 0-1
-const float RightSpeedFactor = 0.81;//to be kept between 0-1
+const float LeftSpeedFactor = 0.7;//to be kept between 0-1
+const float RightSpeedFactor = 1;//to be kept between 0-1
 
 
 void setMotors(int leftMotorSpeed, int rightMotorSpeed) {
@@ -204,14 +205,16 @@ void loop() {
   // Serial.print("  AccZ = ");
   // Serial.print(AccZ);
   Serial.print(motorPower);
-  Serial.print(" ");
-  Serial.print(KalmanAngleRoll);
-  Serial.print(" ");
-  Serial.print(error);
-  Serial.print(" ");
-  Serial.print(KpTerm);
-  Serial.print(" ");
-  Serial.println(KdTerm);
+  Serial.print(",");
+  // Serial.print("KalmanAngle");
+  Serial.println(KalmanAngleRoll);
+  // Serial.print("");
+  // Serial.print(" ");
+  // Serial.print(error);
+  // Serial.print(" ");
+  // Serial.print(KpTerm);
+  // Serial.print(" ");
+  // Serial.println(KdTerm);
 
   motorPower = constrain(motorPower, -255, 255);
   setMotors(motorPower, motorPower);
@@ -232,6 +235,9 @@ ISR(TIMER1_COMPA_vect)
   currentAngle = KalmanAngleRoll;
   
   error = currentAngle - targetAngle;
+  if (error>0) {
+    error = error*1.5;
+  }
 
   if (error<=theta && error>=(-1)*theta){
     error = 0;
@@ -239,15 +245,13 @@ ISR(TIMER1_COMPA_vect)
   errorSum = errorSum + error;  
   errorSum = constrain(errorSum, -300, 300);
   //calculate output from P, I and D values
-  if(currentAngle>=60 || currentAngle<=-60){
-    motorPower = 0;
-  }
-  else{
+
+  
     KdTerm = Kd*(currentAngle-prevAngle)/sampleTime;
     KiTerm = Ki*(errorSum)*sampleTime;
     KpTerm = Kp*(error);
     motorPower = KdTerm + KiTerm + KpTerm;
-  }
+  
   
   prevAngle = currentAngle;
 
