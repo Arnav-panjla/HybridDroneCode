@@ -113,8 +113,12 @@ void setup() {
 }
 
 void loop () {
-  Kp = analogRead(KpPin)*20/1023;
-  Kd = analogRead(KdPin)*2/1023;
+  Kp = (analogRead(KpPin)*20)/1023;
+  Kd = (analogRead(KdPin)*2)/1023;
+  Serial.print("Kp  ");
+  Serial.println(Kp);
+  Serial.print("Kd   ");
+  Serial.println(Kd);
 
   sensors_event_t event;
   bno.getEvent(&event);
