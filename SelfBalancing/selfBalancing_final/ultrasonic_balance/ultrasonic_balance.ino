@@ -3,24 +3,24 @@
 #define rightMotorPWMPin  5
 #define rightMotorDirPin  4
 
-const int trigR = 9;
+const int trigR = 13;
 const int echoR = 10;
 const int trigL = 11;
 const int echoL = 12;
 
-float KpTerm = 0;
-float KiTerm = 0;
-float KdTerm = 0;
+// float KpTerm = 0;
+// float KiTerm = 0;
+// float KdTerm = 0;
 
-volatile float error=0;
-volatile float prevError=0;
-volatile float errorSum=0;
+// volatile float error=0;
+// volatile float prevError=0;
+// volatile float errorSum=0;
 
-const float targetAngle = 0;
+// const float targetAngle = 0;
 
-const float Kp  = 13;
-const float Kd = 0.5;
-const float Ki =  0;
+// const float Kp  = 13;
+// const float Kd = 0.5;
+// const float Ki =  0;
 
 double distanceR;
 double distanceL;
@@ -78,14 +78,24 @@ void loop () {
   Serial.print(" ");
   Serial.println(distanceL);
 
-  if (abs(distanceR-distanceL)>0.2) {
+
+  
+  if (abs(distanceR-distanceL)>0.8) {
     if (distanceR > distanceL) {
-      setMotors(-50, -50);
+      setMotors(-80, -80);
     } else {
-      setMotors(50,50);
+      setMotors(80,80);
     }
+  }
+  else if (abs(distanceR-distanceL)>0.2) {
+    if (distanceR > distanceL) {
+      setMotors(-30, -30);
+    } else {
+      setMotors(30,30);
+    }
+  }
     
-  } else {
+  else {
     setMotors(0,0);
   }
 }
